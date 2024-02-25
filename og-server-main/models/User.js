@@ -9,6 +9,10 @@ const UsersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  kyc: {
+    type: String,
+   
+  },
   copytrading: {
     type: String,
     

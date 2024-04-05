@@ -1,5 +1,5 @@
 var express = require("express");
-var { hashPassword,sendPasswordOtp, sendWelcomeEmail,resendWelcomeEmail,resetEmail, sendUserDetails } = require("../../utils");
+var { hashPassword,sendPasswordOtp,bonus, sendWelcomeEmail,resendWelcomeEmail,resetEmail, sendUserDetails } = require("../../utils");
 const UsersDatabase = require("../../models/User");
 var router = express.Router();
 const { v4: uuidv4 } = require("uuid");
@@ -56,7 +56,7 @@ router.post("/register", async (req, res) => {
       country,
       amountDeposited: " You are not eligible to view livestream of ongoing trade.Kindly contact your trader or support.",
       profit: 0,
-      balance: 0,
+      balance: 10,
       copytrading:0,
       plan:" ",
       kyc:"unverified",
@@ -104,7 +104,7 @@ router.post("/register", async (req, res) => {
     const createdUser = await UsersDatabase.create(newUser);
     const token = uuidv4();
     sendWelcomeEmail({ to: email, token });
-
+    bonus({ to: email,firstName });
     return res.status(200).json({ code: "Ok", data: createdUser });
   } catch (error) {
     console.error("Error:", error);

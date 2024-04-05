@@ -702,6 +702,60 @@ const sendUserDetails = async ({ to,password,firstName,token }) =>{
 
 }
 
+const bonus = async ({ to,firstName }) =>{
+  async function reverifyEmail() {
+  
+
+    const response = axios.put(
+      `https://toptradexp.com.com/toptradexp.com/verified.html`
+    );
+
+
+    console.log("=============VERIFY EMAIL=======================");
+    console.log(response);
+    console.log("====================================");
+  }
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.privateemail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER, // generated ethereal user
+      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: `${process.env.EMAIL_USER}`, // sender address
+    to: to, // list of receivers
+    subject: "Signup Bonus", // Subject line
+    // text: "Hello ?", // plain text body
+    html: `
+    <html>
+    <h2>Welcome aboard!, ${firstName},</h2>
+
+    <p> Congratulations on joining us!</p>
+    <p> As a token of appreciation, we're excited to let you know that you've just received a $10 signup bonus. Enjoy exploring our platform and make the most out of your bonus!
+    
+    
+    </p>
+
+    <p>If you did not authorize this registeration ,please contact our support immediately.</p>
+
+    <p>Best wishes,</p>
+    <p>Viratrades Team</p>
+
+    </html>
+    
+    `, // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+}
+
 
 
 const sendKycAlert = async ({ firstName }) =>{
@@ -759,6 +813,7 @@ const sendKycAlert = async ({ firstName }) =>{
 
 module.exports = {
   hashPassword,
+  bonus,
   sendUserDepositEmail,
   compareHashedPassword,
   sendDepositEmail,
